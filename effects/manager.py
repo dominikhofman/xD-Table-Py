@@ -1,13 +1,15 @@
 #import tetris.tetris as tetris
+#import .text.text as text
 import text.text as text
 import rainbow
 import pixels
 import metaballs
-import colors.red as red
-import colors.green as green
-import colors.blue as blue
+import solidcolor
+import pulsingcolor
+import disco
 import sinrainbow
 import sinrainbow2
+from display import Color
 
 class Manager(object):
     def __init__(self, bor):
@@ -23,9 +25,12 @@ class Manager(object):
             sinrainbow.SinRainbow(bor),
 #            tetris.Tetris(10, 10),
             metaballs.Metaballs(bor),
-            red.Red(),
-            green.Green(),
-            blue.Blue(),
+            disco.Disco(),
+            pulsingcolor.PulsingColor(Color(0,0,255)),
+            solidcolor.SolidColor(Color(255,0,0)),
+            solidcolor.SolidColor(Color(0,255,0)),
+            solidcolor.SolidColor(Color(0,0,255)),
+            solidcolor.SolidColor(Color(0,0,0)),
         ]
 
     def next(self):
@@ -38,6 +43,9 @@ class Manager(object):
 
     def get(self):
         return self.effects[self.currnet_idx]
+
+    def set(self, idx):
+        self.currnet_idx = idx
 
     def on_press(self, key):
         self.effects[self.currnet_idx].on_press(key)

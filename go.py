@@ -4,6 +4,7 @@ from driver import Driver#, pprint
 from effects.manager import Manager
 from datetime import datetime
 from udp import UdpInterface
+from mqtt import Mqtt
 
 exit_flag = False
 
@@ -50,6 +51,7 @@ dr = Driver("192.168.1.6", 6454)
 #dr.start_listening()
 #dr.calibrate()
 m = Manager(bor)
+mqtt = Mqtt("127.0.0.1", 1883, m)
 #ui = UdpInterface(on_press, 4444)
 
 set_start = datetime.now()
@@ -62,7 +64,7 @@ try:
 
         if (datetime.now() - get_start).total_seconds() > (1.0 / get_hz):
             get_start = datetime.now()
-#            dr.get_touchscreen()
+            #dr.get_touchscreen()
 
         effect = m.get()
         effect.step(dt)
@@ -74,4 +76,5 @@ except KeyboardInterrupt:
 
 finally:
     dr.exit_flag = True
+    mqtt.exit_flag = True
     #ui.exit_flag = True

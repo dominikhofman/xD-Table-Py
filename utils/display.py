@@ -72,6 +72,10 @@ class Display(Board):
             buff += "\n"
         print (buff)
 
+    def fade(self, fade_factor):
+        for c in self.data:
+            c.fade(fade_factor)
+
 
 if __name__ == "__main__":
     dis = Display(10, 10)

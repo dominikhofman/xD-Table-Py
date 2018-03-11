@@ -18,9 +18,10 @@ class Driver(object):
     ARTNET = 0x41
 
     def __init__(self, ip="127.0.0.1", port=1337):
-        self.ip = ip 
+        self.ip = ip
         self.port = port
         self.connected = False
+        self.exit_flag = False
 
         self.address = (ip, port)
 
@@ -29,9 +30,10 @@ class Driver(object):
              socket.SOCK_DGRAM) # UDP
         self.sock.settimeout(3)
 
+        self.callback = lambda x, y: None
+
     def start_listening(self):
         t = threading.Thread(target=self.receive_thread)
-   #     t.deamon = True
         t.start()
 
     def send_data(self, data):
@@ -63,18 +65,14 @@ class Driver(object):
         self.send_data([Driver.GET_TOUCHSCREEN_RAW])
 
     def receive_thread(self):
-        global exit
-        while not exit:
-            msg, client = self.sock.recvfrom(1024) 
-            msg = msg[1:]
-            printt(msg)
-            frame = []
-            for e in msg:
-                frame += [0, 0, e]
-            self.set_matrix(frame)
-#            if ord(msg[0]) == Driver.TOUCHSCREEN:
-            #print("Got response: \n{}".format(", ".join("0x{:02X}".format( ord(c)) for c in msg)))
+        while not self.exit_flag:
+            try:
+                msg, client = self.sock.recvfrom(1024)
+                msg = msg[1:]
+                self.callback(self, msg)
 
+            except Exception:
+                pass
 
 
 def printt(data):
@@ -89,19 +87,26 @@ def printt(data):
 if __name__ == "__main__":
     dr = Driver("192.168.1.6", 6454)
 
+    def callback(driver, data):
+        printt(data)
+        frame = []
+        for e in data:
+            frame += [0, 0, e]
+        driver.set_matrix(frame)
+
+    dr.callback = callback
     dr.start_listening()
 
-#    dr.calibrate()
+    dr.calibrate()
 
     try:
+        frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
+        dr.set_matrix(frame)
+        time.sleep(2)
+
         while True:
-            frame = [255,0,0 ,0,255,0 ,0,0,255]
-            dr.set_matrix(frame)
             dr.get_touchscreen()
             time.sleep(0.05)
 
     except KeyboardInterrupt:
-        global exit
-        exit = True
-     
-
+        dr.exit_flag = True

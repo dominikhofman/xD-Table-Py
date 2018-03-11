@@ -14,7 +14,7 @@ class SinRainbow2(object):
         self.phase += self.dphase * dt
 
     def get_y(self, x):
-        y = (self.const + self.amp * math.sin(self.freq * x  + self.phase)) 
+        y = (self.const + self.amp * math.sin(self.freq * x  + self.phase))
         return int(round(y))
 
     def render(self, display):
@@ -29,8 +29,8 @@ class SinRainbow2(object):
 
             for y in range(display.height):
 
-                dist = dist_to_sine(x, y, self.const, self.amp, self.freq, self.phase) 
-                dist = 1.0 / (1.0 + dist) 
+                dist = dist_to_sine(x, y, self.const, self.amp, self.freq, self.phase)
+                dist = 1.0 / (1.0 + dist)
 
                 cp = copy.copy(c)
                 cp.fade(dist)

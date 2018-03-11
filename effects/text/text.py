@@ -1,8 +1,9 @@
 import colorsys
 from display import Color, Display
+#import .constants
+
 import constants
 import time
-
 
 class Text(object):
     def __init__(self, bor):
