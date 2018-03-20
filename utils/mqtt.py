@@ -3,10 +3,11 @@ import threading
 import json
 
 class Mqtt(object):
-    def __init__(self, host, port, manager):
+    def __init__(self, host, port, manager, driver):
         self.host = host
         self.port = port
         self.manager = manager
+        self.driver = driver
         self.exit_flag = False
 
         t = threading.Thread(target=self.worker)
@@ -34,11 +35,16 @@ class Mqtt(object):
         # reconnect then subscriptions will be renewed.
         self.client.subscribe("home/xdtable/effect/set")
         self.client.subscribe("home/xdtable/effect/next")
+        self.client.subscribe("home/xdtable/calibrate")
 
     def on_message(self, client, userdata, msg):
         # egz {"effect": {"color": {"r": 255, "b": 455, "g": 455}, "idx": 2}}
         if msg.topic == "home/xdtable/effect/set":
             m = json.loads(msg.payload)
             self.manager.set(m['idx'])
+            
         if msg.topic == "home/xdtable/effect/next":
             self.manager.next()
+
+        if msg.topic == "home/xdtable/effect/next":
+            self.driver.calibrate()

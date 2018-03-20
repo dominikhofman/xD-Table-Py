@@ -58,7 +58,7 @@ dr.callbacks.append(abc)
 dr.start_listening()
 dr.calibrate()
 m = Manager(bor)
-mqtt = Mqtt("127.0.0.1", 1883, m)
+mqtt = Mqtt("127.0.0.1", 1883, m, dr)
 #ui = UdpInterface(on_press, 4444)
 
 set_start = datetime.now()
