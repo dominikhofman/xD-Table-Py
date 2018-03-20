@@ -21,21 +21,19 @@ class SinRainbow2(object):
         display.fill(Color())
         shift = 0
         for x in range(display.width):
-            hue = (self.hue + shift) % 1
-            #if self.bor.get(x, y):
-            #    hue += 0.5
-            c = Color(
-                *colorsys.hsv_to_rgb(hue, self.sat, self.val))
-
             for y in range(display.height):
-
+                hue = (self.hue + shift) % 1
+                if self.bor.get(x, y):
+                    hue += 0.5
                 dist = dist_to_sine(x, y, self.const, self.amp, self.freq, self.phase)
                 dist = 1.0 / (1.0 + dist)
 
-                cp = copy.copy(c)
-                cp.fade(dist)
+                #cp = copy.copy(c)
+                #cp.fade(dist)
+                c = Color(
+                    *colorsys.hsv_to_rgb(hue, self.sat, self.val * dist))
 
-                display.set(x, y, cp)
+                display.set(x, y, c)
 
             shift += self.dshift
 

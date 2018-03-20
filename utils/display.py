@@ -1,5 +1,6 @@
 from itertools import chain
 from copy import copy
+import colorsys
 
 class Color(object):
     def __init__(self, r=0, g=0, b=0):
@@ -13,10 +14,14 @@ class Color(object):
     def get_brightness(self):
         return (self.r + self.g + self.b) / 3.0
 
+    def clone(self):
+        return copy(self)
+
     def fade(self, factor):
         self.r *= factor
         self.g *= factor
         self.b *= factor
+        return self
 
     def safe_fade(self, factor):
         self.r *= factor
@@ -28,6 +33,53 @@ class Color(object):
         if self.r < 0: self.r = 0
         if self.g < 0: self.g = 0
         if self.b < 0: self.b = 0
+        return self
+
+    def __eq__(self, other):
+        if self.r != other.r:
+            return False
+
+        if self.g != other.g:
+            return False
+
+        if self.b != other.b:
+            return False
+        return True
+
+    def __ne__(self, other):
+        if self.r != other.r:
+            return True
+
+        if self.g != other.g:
+            return True
+
+        if self.b != other.b:
+            return True
+        return False
+
+    @staticmethod
+    def hsv(h, s=1.0, v=255):
+        return Color(*colorsys.hsv_to_rgb(h, s, v))
+
+    @staticmethod
+    def black():
+        return Color(0, 0, 0)
+
+    @staticmethod
+    def white():
+        return Color(255, 255, 255)
+
+    @staticmethod
+    def red():
+        return Color(255, 0, 0)
+
+    @staticmethod
+    def green():
+        return Color(0, 255, 0)
+
+    @staticmethod
+    def blue():
+        return Color(0, 0, 255)
 
 class Board(object):
     def __init__(self, width, height):
@@ -38,8 +90,32 @@ class Board(object):
     def set(self, x, y, c):
         self.data[y * self.width + x] = c
 
+    def safe_set(self, x, y, c):
+        x = int(x)
+        y = int(y)
+        if x > self.width - 1 or x < 0:
+            return
+        if y > self.height - 1 or x < 0:
+            return
+
+        self.data[y * self.width + x] = c
+
     def get(self, x, y):
         return self.data[y * self.width + x]
+
+    def safe_get(self, x, y):
+        x = int(x)
+        y = int(y)
+        if x > self.width - 1 or x < 0:
+            return Color.black()
+        if y > self.height - 1 or x < 0:
+            return Color.black()
+
+        return self.data[y * self.width + x]
+
+
+    def row(self, y):
+        return self.data[ self.width * y : self.width * (y + 1) ]
 
     def get_ascii(self, n):
         return str(self.data[n])

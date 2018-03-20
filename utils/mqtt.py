@@ -33,8 +33,12 @@ class Mqtt(object):
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
         self.client.subscribe("home/xdtable/effect/set")
+        self.client.subscribe("home/xdtable/effect/next")
 
     def on_message(self, client, userdata, msg):
         # egz {"effect": {"color": {"r": 255, "b": 455, "g": 455}, "idx": 2}}
-        m = json.loads(msg.payload)
-        self.manager.set(m['idx'])
+        if msg.topic == "home/xdtable/effect/set":
+            m = json.loads(msg.payload)
+            self.manager.set(m['idx'])
+        if msg.topic == "home/xdtable/effect/next":
+            self.manager.next()

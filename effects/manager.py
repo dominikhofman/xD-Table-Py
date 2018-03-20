@@ -9,6 +9,9 @@ import pulsingcolor
 import disco
 import sinrainbow
 import sinrainbow2
+import droplet
+import paint
+import tennis
 from display import Color
 
 class Manager(object):
@@ -18,19 +21,22 @@ class Manager(object):
         texte.set_text(10, 1, "SIEMA DANIEL XD")
 
         self.effects = [
-            texte,
-            pixels.Pixels(bor),
-            rainbow.Rainbow(bor),
-            sinrainbow2.SinRainbow2(bor),
-            sinrainbow.SinRainbow(bor),
+            texte, # 0
+            pixels.Pixels(bor), #1
+            rainbow.Rainbow(bor), #2
+            sinrainbow2.SinRainbow2(bor), #3
+            sinrainbow.SinRainbow(bor), #4
 #            tetris.Tetris(10, 10),
-            metaballs.Metaballs(bor),
-            disco.Disco(),
-            pulsingcolor.PulsingColor(Color(0,0,255)),
-            solidcolor.SolidColor(Color(255,0,0)),
-            solidcolor.SolidColor(Color(0,255,0)),
-            solidcolor.SolidColor(Color(0,0,255)),
-            solidcolor.SolidColor(Color(0,0,0)),
+            metaballs.Metaballs(bor), #5
+            disco.Disco(), #6
+            pulsingcolor.PulsingColor(Color.blue()), #7
+            solidcolor.SolidColor(Color.red()), #8
+            solidcolor.SolidColor(Color.green()), #9
+            solidcolor.SolidColor(Color.blue()), #10
+            solidcolor.SolidColor(Color.black()), #11
+            droplet.Droplet(bor), #12
+            paint.Paint(bor), #13
+            tennis.Tennis(bor), #13
         ]
 
     def next(self):

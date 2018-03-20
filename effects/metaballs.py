@@ -34,10 +34,27 @@ class Ball(object):
             self.y = self.ctx.height - 1
             self.dy *= -1
 
-    def update(self, dt):
+    def handle_collisions_bor(self, dt, bor):
+        nx = int(self.x + self.dx * dt)
+        ny = int(self.y + self.dy * dt)
+
+        if bor.get(nx, ny):
+            self.dx *= -1
+            self.dy *= -1
+            return
+
+        if bor.get(nx, int(self.y)):
+            self.dx *= -1
+
+        if bor.get(int(self.x), ny):
+            self.dy *= -1
+
+
+    def update(self, dt, bor):
         self.handle_collisions_with_borders(dt)
-        self.x += self.dx
-        self.y += self.dy
+        self.handle_collisions_bor(dt, bor)
+        self.x += self.dx * dt
+        self.y += self.dy * dt
 
     @staticmethod
     def dist(x1, y1, x2, y2):
@@ -61,11 +78,12 @@ class Metaballs(object):
         self.width = bor.width
         self.height = bor.height
         self.balls = [Ball(self), Ball(self)]
+        self.balls[0].c = Color(255, 0, 0)
+        self.balls[1].c = Color(0, 0, 255)
 
     def step(self, dt):
-
         for b in self.balls:
-            b.update(dt)
+            b.update(dt, self.bor)
 
     def render(self, display):
         display.fill(Color(0, 0, 0))
@@ -84,7 +102,10 @@ class Metaballs(object):
                     g = 255
                 if b > 255:
                     b = 255
-                display.set(x, y, Color(r, g, b))
+                if self.bor.get(x, y):
+                    display.set(x, y, Color(255, 255, 255))
+                else:
+                    display.set(x, y, Color(r, g, b))
 
         # for b in self.balls:
         #    display.set(int(b.x), int(b.y), Color(255, 255, 255))

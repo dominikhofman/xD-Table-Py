@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+import os
 
 class Driver(object):
     PING = 0x0
@@ -30,7 +31,7 @@ class Driver(object):
              socket.SOCK_DGRAM) # UDP
         self.sock.settimeout(3)
 
-        self.callback = lambda x, y: None
+        self.callbacks = []
 
     def start_listening(self):
         t = threading.Thread(target=self.receive_thread)
@@ -69,10 +70,14 @@ class Driver(object):
             try:
                 msg, client = self.sock.recvfrom(1024)
                 msg = msg[1:]
-                self.callback(self, msg)
+                for c in self.callbacks:
+                    c(msg)
 
-            except Exception:
+            except socket.timeout:
                 pass
+            except Exception as e:
+                print(e)
+
 
 
 def printt(data):
@@ -84,28 +89,34 @@ def printt(data):
             buff = ""
     print("\n")
 
+
 if __name__ == "__main__":
     dr = Driver("192.168.1.6", 6454)
+    os.system('clear')
+    frame = []
 
-    def callback(driver, data):
-        printt(data)
+    def callback(data):
+        global frame
         frame = []
+        print('\033[H' + time.asctime(time.localtime()))
+        printt(data)
         for e in data:
             frame += [0, 0, e]
-        driver.set_matrix(frame)
+        #dr.set_matrix(frame)
 
-    dr.callback = callback
+    dr.callbacks.append(callback)
     dr.start_listening()
 
     dr.calibrate()
 
     try:
-        frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
-        dr.set_matrix(frame)
-        time.sleep(2)
+        #frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
+        #dr.set_matrix(frame)
+        #time.sleep(2)
 
         while True:
             dr.get_touchscreen()
+            dr.set_matrix(frame)
             time.sleep(0.05)
 
     except KeyboardInterrupt:

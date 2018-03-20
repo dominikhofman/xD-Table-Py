@@ -42,15 +42,21 @@ def call(dr, data):
 
 
 set_hz = 30
-get_hz = 1
+get_hz = 20
 dis = Display(10, 10)
 bor = Board(10, 10)
 bor.fill(False)
+def abc(data):
+    global bor
+    bor.data = [(ord(d) > 128) for d in data]
+
+
 #dr = Driver("192.168.1.6", 6454)
 dr = Driver("xd-table.local", 6454)
+dr.callbacks.append(abc)
 #dr.callbacks.append(call)
-#dr.start_listening()
-#dr.calibrate()
+dr.start_listening()
+dr.calibrate()
 m = Manager(bor)
 mqtt = Mqtt("127.0.0.1", 1883, m)
 #ui = UdpInterface(on_press, 4444)
@@ -65,7 +71,7 @@ try:
 
         if (datetime.now() - get_start).total_seconds() > (1.0 / get_hz):
             get_start = datetime.now()
-            #dr.get_touchscreen()
+            dr.get_touchscreen()
 
         effect = m.get()
         effect.step(dt)

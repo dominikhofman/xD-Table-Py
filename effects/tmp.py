@@ -24,12 +24,12 @@ def dist(x):
 
 def newtons(guess, depth):
     if depth == 0:
-        return guess 
-    
+        return guess
+
     return newtons(guess - (fun(guess)/funp(guess)), depth - 1)
 
 def dist_to_sine(px, py, a, b, c, d):
-    """ 
+    """
     return distance from point (px, py) to sine
     y = a + b*sin(c*x + d)
     """
@@ -42,7 +42,7 @@ def dist_to_sine(px, py, a, b, c, d):
         x = x - (first / second)
 
     return sqrt((x-px)**2.0 + (a+b*sin(c*x+d)-py)**2.0)
-#x = e 
+#x = e
 #print ('init x: ', x)
 #x = newtons(x,15)
 #print (x, dest(x), dist(x))
