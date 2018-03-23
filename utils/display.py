@@ -57,6 +57,9 @@ class Color(object):
             return True
         return False
 
+    def __str__(self):
+        return "<r: {r}, g: {g}, b: {b}".format(**self.__dict__)
+
     @staticmethod
     def hsv(h, s=1.0, v=255):
         return Color(*colorsys.hsv_to_rgb(h, s, v))
@@ -95,7 +98,7 @@ class Board(object):
         y = int(y)
         if x > self.width - 1 or x < 0:
             return
-        if y > self.height - 1 or x < 0:
+        if y > self.height - 1 or y < 0:
             return
 
         self.data[y * self.width + x] = c

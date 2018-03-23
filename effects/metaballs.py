@@ -1,17 +1,19 @@
 import colorsys
 from random import random, randint
 from display import Color
-
+from math import copysign
 
 class Ball(object):
-    def __init__(self, ctx):
+    def __init__(self, ctx, c):
         self.ctx = ctx
         self.x = randint(0, ctx.width)
         self.y = randint(0, ctx.height)
         self.dx = random()
+        self.dx += copysign(1.0, self.dx)
         self.dy = random()
+        self.dy += copysign(1.0, self.dy)
         self.max_dist = Ball.dist(0, 0, ctx.width, ctx.height)
-        self.c = Color(*colorsys.hsv_to_rgb(random(), 1, 255))
+        self.c = c
 
     def handle_collisions_with_borders(self, dt):
         # left border
@@ -77,9 +79,8 @@ class Metaballs(object):
         self.bor = bor
         self.width = bor.width
         self.height = bor.height
-        self.balls = [Ball(self), Ball(self)]
-        self.balls[0].c = Color(255, 0, 0)
-        self.balls[1].c = Color(0, 0, 255)
+        r = random()
+        self.balls = [Ball(self, Color.hsv(r)), Ball(self, Color.hsv((r + 0.5) % 1.0))]
 
     def step(self, dt):
         for b in self.balls:

@@ -42,9 +42,10 @@ class Mqtt(object):
         if msg.topic == "home/xdtable/effect/set":
             m = json.loads(msg.payload)
             self.manager.set(m['idx'])
-            
+
         if msg.topic == "home/xdtable/effect/next":
             self.manager.next()
 
-        if msg.topic == "home/xdtable/effect/next":
+        if msg.topic == "home/xdtable/calibrate":
             self.driver.calibrate()
+            print('calibrated')

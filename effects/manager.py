@@ -12,11 +12,13 @@ import sinrainbow2
 import droplet
 import paint
 import tennis
+import rays
+import plasma
 from display import Color
 
 class Manager(object):
     def __init__(self, bor):
-        self.currnet_idx = 3
+        self.currnet_idx = 5
         texte = text.Text(bor)
         texte.set_text(10, 1, "SIEMA DANIEL XD")
 
@@ -36,7 +38,9 @@ class Manager(object):
             solidcolor.SolidColor(Color.black()), #11
             droplet.Droplet(bor), #12
             paint.Paint(bor), #13
-            tennis.Tennis(bor), #13
+            tennis.Tennis(bor), #14
+            rays.Rays(bor), #15
+            plasma.Plasma(bor), #16
         ]
 
     def next(self):
