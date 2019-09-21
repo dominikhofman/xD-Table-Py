@@ -70,6 +70,8 @@ class Driver(object):
             try:
                 msg, client = self.sock.recvfrom(1024)
                 msg = msg[1:]
+                if len(msg) != 100:
+                    raise Exception("Wrong len of get packet({})".format(len(msg)))
                 for c in self.callbacks:
                     c(msg)
 
@@ -91,7 +93,8 @@ def printt(data):
 
 
 if __name__ == "__main__":
-    dr = Driver("192.168.1.6", 6454)
+    #dr = Driver("192.168.1.6", 6454)
+    dr = Driver("192.168.1.214", 6454)
     os.system('clear')
     frame = []
 
@@ -110,11 +113,12 @@ if __name__ == "__main__":
     dr.calibrate()
 
     try:
-        #frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
-        #dr.set_matrix(frame)
-        #time.sleep(2)
+        frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
+        dr.set_matrix(frame)
+        time.sleep(2)
 
         while True:
+            print('.')
             dr.get_touchscreen()
             dr.set_matrix(frame)
             time.sleep(0.05)

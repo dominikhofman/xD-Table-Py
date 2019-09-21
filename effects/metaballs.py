@@ -3,6 +3,7 @@ from random import random, randint
 from display import Color
 from math import copysign
 
+
 class Ball(object):
     def __init__(self, ctx, c):
         self.ctx = ctx
@@ -51,7 +52,6 @@ class Ball(object):
         if bor.get(int(self.x), ny):
             self.dy *= -1
 
-
     def update(self, dt, bor):
         self.handle_collisions_with_borders(dt)
         self.handle_collisions_bor(dt, bor)
@@ -68,7 +68,8 @@ class Ball(object):
     def render(self, display):
         for x in xrange(display.width):
             for y in xrange(display.height):
-                display.set(x, y, Color(*colorsys.hsv_to_rgb(self.get_val(x, y), 1, 255)))
+                display.set(x, y, Color(
+                    *colorsys.hsv_to_rgb(self.get_val(x, y), 1, 255)))
 
         display.set(int(self.x), int(self.y), Color(255, 255, 255))
 
@@ -80,7 +81,8 @@ class Metaballs(object):
         self.width = bor.width
         self.height = bor.height
         r = random()
-        self.balls = [Ball(self, Color.hsv(r)), Ball(self, Color.hsv((r + 0.5) % 1.0))]
+        self.balls = [Ball(self, Color.hsv(r)), Ball(
+            self, Color.hsv((r + 0.5) % 1.0))]
 
     def step(self, dt):
         for b in self.balls:

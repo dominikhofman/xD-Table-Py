@@ -35,6 +35,7 @@ class Mqtt(object):
         # reconnect then subscriptions will be renewed.
         self.client.subscribe("home/xdtable/effect/set")
         self.client.subscribe("home/xdtable/effect/next")
+        self.client.subscribe("home/xdtable/effect/prev")
         self.client.subscribe("home/xdtable/calibrate")
 
     def on_message(self, client, userdata, msg):
@@ -45,6 +46,9 @@ class Mqtt(object):
 
         if msg.topic == "home/xdtable/effect/next":
             self.manager.next()
+
+        if msg.topic == "home/xdtable/effect/prev":
+            self.manager.prev()
 
         if msg.topic == "home/xdtable/calibrate":
             self.driver.calibrate()

@@ -10,22 +10,29 @@ class Plasma(object):
 
     def step(self, dt):
         self.z += self.dz * dt
+        self.hue_off += self.dhue * dt
 
     def render(self, display):
         for y in range(display.height):
             for x in range(display.width):
-                hue = (pnoise3(x / self.x_zoom, y / self.y_zoom, self.z / self.z_zoom) + 1.0) / 2.0
+                hue = (pnoise3(x / self.x_zoom, y / self.y_zoom, self.z / self.z_zoom) + 1.0) / 2.0 
+                hue += self.hue_off
+
                 if self.bor.get(x, y):
                     hue += 0.5
                 c = Color.hsv(hue)
                 display.set(x, y, c)
+                
 
     def set_defaults(self):
         self.z = 0.0
-        self.dz = .1
-        self.x_zoom = 10.0
-        self.y_zoom = 10.0
+        self.dz = .2
+        self.x_zoom = 7.0
+        self.y_zoom = 7.0
         self.z_zoom = 1.0
+        self.hue_off = 0.0
+        self.dhue = 0.1
+        
 
 
     def on_press(self, key):

@@ -8,34 +8,6 @@ from mqtt import Mqtt
 
 exit_flag = False
 
-
-def on_press(key):
-    try:
-        key = key.char
-    except:
-        print('wirdo char')
-        return
-
-    global m
-    if key == 'p':
-        # exit
-        global exit_flag
-        exit_flag = True
-        return
-
-    if key == 'e':
-        # next effect
-        m.next()
-        return
-
-    if key == 'q':
-        # prev effect
-        m.prev()
-        return
-
-    m.on_press(key)
-
-
 def call(dr, data):
     global bor
     bor.load(data)
@@ -51,8 +23,8 @@ def abc(data):
     bor.data = [(ord(d) > 128) for d in data]
 
 
-#dr = Driver("192.168.1.6", 6454)
-dr = Driver("xd-table.local", 6454)
+dr = Driver("192.168.1.214", 6454)
+#dr = Driver("xd-table.local", 6454)
 dr.callbacks.append(abc)
 #dr.callbacks.append(call)
 dr.start_listening()
@@ -71,7 +43,7 @@ try:
 
         if (datetime.now() - get_start).total_seconds() > (1.0 / get_hz):
             get_start = datetime.now()
-            dr.get_touchscreen()
+    #        dr.get_touchscreen()
 
         effect = m.get()
         effect.step(dt)
