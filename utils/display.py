@@ -24,6 +24,7 @@ class Color(object):
         return self
 
     def safe_fade(self, factor):
+        # TODO make more pythonic
         self.r *= factor
         self.g *= factor
         self.b *= factor
@@ -34,6 +35,9 @@ class Color(object):
         if self.g < 0: self.g = 0
         if self.b < 0: self.b = 0
         return self
+
+    def constrain(val, min_val, max_val):
+        return min(max_val, max(min_val, val))
 
     def __eq__(self, other):
         if self.r != other.r:
@@ -60,6 +64,9 @@ class Color(object):
     def __str__(self):
         return "<r: {r}, g: {g}, b: {b}".format(**self.__dict__)
 
+    def __repr__(self):
+        return str(self)
+        
     @staticmethod
     def hsv(h, s=1.0, v=255):
         return Color(*colorsys.hsv_to_rgb(h, s, v))

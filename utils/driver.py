@@ -45,7 +45,7 @@ class Driver(object):
             time.sleep(1)
 
     def set_matrix(self, data):
-        self.send_data([Driver.SET_MATRIX, len(data) / 3] + data)
+        self.send_data([Driver.SET_MATRIX, len(data) // 3] + data)
 
     def ping(self):
         self.send_data([Driver.PING])
@@ -98,19 +98,19 @@ if __name__ == "__main__":
     os.system('clear')
     frame = []
 
-    def callback(data):
-        global frame
-        frame = []
-        print('\033[H' + time.asctime(time.localtime()))
-        printt(data)
-        for e in data:
-            frame += [0, 0, e]
-        #dr.set_matrix(frame)
+    # def callback(data):
+    #     global frame
+    #     frame = []
+    #     print('\033[H' + time.asctime(time.localtime()))
+    #     printt(data)
+    #     for e in data:
+    #         frame += [0, 0, e]
+    #     #dr.set_matrix(frame)
 
-    dr.callbacks.append(callback)
-    dr.start_listening()
+    # dr.callbacks.append(callback)
+    # dr.start_listening()
 
-    dr.calibrate()
+    # dr.calibrate()
 
     try:
         frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
         while True:
             print('.')
-            dr.get_touchscreen()
+            # dr.get_touchscreen()
             dr.set_matrix(frame)
             time.sleep(0.05)
 
