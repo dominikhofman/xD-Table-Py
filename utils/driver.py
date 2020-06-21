@@ -114,6 +114,7 @@ if __name__ == "__main__":
 
     try:
         frame = ([255, 0, 0, 0, 255, 0, 0, 0, 255] * 33) + [255, 0, 0]
+        frame = [255, 255, 255]*100
         dr.set_matrix(frame)
         time.sleep(2)
 

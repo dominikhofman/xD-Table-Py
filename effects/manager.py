@@ -2,6 +2,7 @@
 # import .text.text as text
 import text.text as text
 import rainbow
+import rainbow_slow
 import pixels
 import metaballs
 import solidcolor
@@ -15,12 +16,14 @@ import tennis
 import rays
 import plasma
 import xdcolor
+import kibana
 from display import Color
-
+from effects.gifplayer import GifPlayer
 
 class Manager(object):
     def __init__(self, bor):
-        self.currnet_idx = 10
+        # self.currnet_idx = 16
+        self.currnet_idx = 19
         texte = text.Text(bor)
         texte.set_text(10, 1, "XD XD XD XD")
 
@@ -34,9 +37,6 @@ class Manager(object):
             metaballs.Metaballs(bor),  # 5
             disco.Disco(),  # 6
             pulsingcolor.PulsingColor(Color.blue()),  # 7
-#            solidcolor.SolidColor(Color.red()),  # 8
-#            solidcolor.SolidColor(Color.green()),  # 9
-#            solidcolor.SolidColor(Color.blue()),  # 10
             xdcolor.XDColor(Color.red()),  # 8
             xdcolor.XDColor(Color.green()),  # 9
             xdcolor.XDColor(Color.blue()),  # 10
@@ -46,6 +46,10 @@ class Manager(object):
             tennis.Tennis(bor),  # 14
             rays.Rays(bor),  # 15
             plasma.Plasma(bor),  # 16
+            #GifPlayer('/home/pi/xD-Table-Py/effects/gifplayer/gifs/fireplace_smol.gif'),  # 17
+            GifPlayer('/home/pi/xD-Table-Py/effects/gifplayer/gifs/fireplace_doniel.gif'),  # 17
+            rainbow_slow.RainbowSlow(bor),  # 18
+            kibana.Heatmap(),  # 19
         ]
 
     def next(self):
@@ -60,6 +64,7 @@ class Manager(object):
         return self.effects[self.currnet_idx]
 
     def set(self, idx):
+        idx = idx % len(self.effects)
         self.currnet_idx = idx
 
     def on_press(self, key):
