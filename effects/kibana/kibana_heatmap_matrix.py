@@ -29,7 +29,7 @@ def make_request(datetime_from, datetime_to):
                         "aggs": {
                             "1": {
                                 "avg": {
-                                    "field": "data.adverts_average_per_second"
+                                    "field": "data.accepted_adverts_per_second"
                                 }
                             }
                         }
@@ -107,8 +107,6 @@ def get_matrix():
 
 def process_request_data_to_matrix(request_data):
     buckets = request_data["aggregations"]["2"]["buckets"][1:-1]
-    print(len(buckets))
-
     wps = set()
     data = []
     for bucket in buckets:

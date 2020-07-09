@@ -24,7 +24,6 @@ class Heatmap(object):
     def __init__(self):
         self._last_fetch = 0
         self._matrix = None
-        pass
         # im = Image.open(gif_path)
         # if im.size != (10, 10):
         #     raise Exception('Wrong giff size! Expected 10x10 got %sx%s' % im.size)
@@ -44,7 +43,6 @@ class Heatmap(object):
         if time.time() - self._last_fetch > self.FETCH_INTERVAL:
             self._last_fetch = time.time()
             self._matrix = get_matrix()
-            print('fetch')
         # self._z += self._dz * dt
         # self._current_frame_idx = int(self._z % len(self._frames))
 
