@@ -1,0 +1,15 @@
+version: "3"
+services:
+  xd_table:
+    build: ./docker
+    command: python3 /code/go.py
+    # command: tail -f /dev/null
+    restart: always
+    volumes:
+      - "./src:/code"
+    networks:
+      - smartroom_default
+    privileged: true
+networks:
+  smartroom_default:
+    external: true
