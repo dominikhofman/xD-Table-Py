@@ -1,6 +1,8 @@
 from itertools import chain
 from copy import copy
 import colorsys
+import png
+
 
 class Color(object):
     def __init__(self, r=0, g=0, b=0):
@@ -123,7 +125,6 @@ class Board(object):
 
         return self.data[y * self.width + x]
 
-
     def row(self, y):
         return self.data[ self.width * y : self.width * (y + 1) ]
 
@@ -161,6 +162,15 @@ class Display(Board):
     def fade(self, fade_factor):
         for c in self.data:
             c.fade(fade_factor)
+    
+    def save_as_png(self, fname):
+        result = []
+        for i in range(10):
+            row = []
+            for c in self.data[i*10: (i+1)*10]:
+                row.extend([int(c.r), int(c.g), int(c.b)])
+            result.append(row)
+        png.from_array(result, 'RGB').save(fname)
 
 
 if __name__ == "__main__":

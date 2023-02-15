@@ -66,8 +66,8 @@ class Ball(object):
         return ((1.0 - (Ball.dist(self.x, self.y, x, y) / self.max_dist)) ** 8)
 
     def render(self, display):
-        for x in xrange(display.width):
-            for y in xrange(display.height):
+        for x in range(display.width):
+            for y in range(display.height):
                 display.set(x, y, Color(
                     *colorsys.hsv_to_rgb(self.get_val(x, y), 1, 255)))
 
@@ -90,8 +90,8 @@ class Metaballs(object):
 
     def render(self, display):
         display.fill(Color(0, 0, 0))
-        for x in xrange(display.width):
-            for y in xrange(display.height):
+        for x in range(display.width):
+            for y in range(display.height):
                 r, g, b = 0, 0, 0
                 for ball in self.balls:
                     val = ball.get_val(x, y)

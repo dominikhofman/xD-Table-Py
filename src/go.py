@@ -48,6 +48,8 @@ try:
         effect = m.get()
         effect.step(dt)
         effect.render(dis)
+        # dis.save_as_png('tmp/'+effect.__class__.__name__.lower() + '.png')
+        print(effect.__class__.__name__)
         dr.set_matrix(dis.serialize())
 
 except KeyboardInterrupt:
